@@ -1,2 +1,1 @@
-# olist_lakehouse_prod
-
+# olist_lakehouse
