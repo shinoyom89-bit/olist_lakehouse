@@ -6,14 +6,13 @@ resources:
       name: sample_job
 
       trigger:
-        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
         periodic:
           interval: 1
           unit: DAYS
 
-      #email_notifications:
-      #  on_failure:
-      #    - your_email@example.com
+      # email_notifications:
+      #   on_failure:
+      #     - your_email@example.com
 
       parameters:
         - name: catalog
@@ -25,18 +24,24 @@ resources:
         - task_key: autoloader_parametre_pass_task
           notebook_task:
             notebook_path: ../src/dev_olist_bundle/parametres_for_autoloader.ipynb
+
         - task_key: autoloader_code_runner
           depends_on:
             - task_key: autoloader_parametre_pass_task
+
           for_each_task:
             inputs: "{{tasks.autoloader_parametre_pass_task.values.folders}}"
+            concurrency: 4
+
             task:
               task_key: autoloader_code_runner_iteration
+
               notebook_task:
                 notebook_path: ../src/dev_olist_bundle/auto_loader_ingestion.ipynb
+
                 base_parameters:
-                  file_format: "{{tasks.autoloader_parametre_pass_task.values.file_format}}"
-                  source_name: "{{tasks.autoloader_parametre_pass_task.values.source_name}}"
+                  source_name: "{{input.source_name}}"
+                  file_format: "{{input.file_format}}"
 
       environments:
         - environment_key: default
