@@ -24,7 +24,7 @@ resources:
       tasks:
         - task_key: autoloader_parametre_pass_task
           notebook_task:
-            notebook_path: ../src/dev_olist_bundle/parametres_for_autoloader
+            notebook_path: ../src/dev_olist_bundle/parametres_for_autoloader.ipynb
         - task_key: autoloader_code_runner
           depends_on:
             - task_key: autoloader_parametre_pass_task
@@ -33,7 +33,7 @@ resources:
             task:
               task_key: autoloader_code_runner_iteration
               notebook_task:
-                notebook_path: ../src/dev_olist_bundle/auto_loader_ingestion
+                notebook_path: ../src/dev_olist_bundle/auto_loader_ingestion.ipynb
                 base_parameters:
                   file_format: "{{tasks.autoloader_parametre_pass_task.values.file_format}}"
                   source_name: "{{tasks.autoloader_parametre_pass_task.values.source_name}}"
