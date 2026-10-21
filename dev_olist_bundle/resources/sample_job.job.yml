@@ -1,0 +1,49 @@
+# A sample job for dev_olist_bundle.
+
+resources:
+  jobs:
+    sample_job:
+      name: sample_job
+
+      trigger:
+        periodic:
+          interval: 1
+          unit: DAYS
+
+      # email_notifications:
+      #   on_failure:
+      #     - your_email@example.com
+
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: ${var.schema}
+
+      tasks:
+        - task_key: autoloader_parametre_pass_task
+          notebook_task:
+            notebook_path: ../src/dev_olist_bundle/parametres_for_autoloader.ipynb
+
+        - task_key: autoloader_code_runner
+          depends_on:
+            - task_key: autoloader_parametre_pass_task
+
+          for_each_task:
+            inputs: "{{tasks.autoloader_parametre_pass_task.values.folders}}"
+            concurrency: 4
+
+            task:
+              task_key: autoloader_code_runner_iteration
+
+              notebook_task:
+                notebook_path: ../src/dev_olist_bundle/auto_loader_ingestion.ipynb
+
+                base_parameters:
+                  source_name: "{{input.source_name}}"
+                  file_format: "{{input.file_format}}"
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"
