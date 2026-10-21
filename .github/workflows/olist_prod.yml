@@ -13,7 +13,7 @@ on:
     branches:
       - main
     paths:
-      - 'olist_lakehouse/**'
+      - 'dev_olist_bundle/**'
 
 jobs:
   deploy:
@@ -31,7 +31,7 @@ jobs:
       # Deploy the bundle to the "prod" target as defined
       # in the bundle's settings file.
       - run: databricks bundle deploy
-        working-directory: olist_lakehouse
+        working-directory: dev_olist_bundle
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: prod
