@@ -40,6 +40,8 @@ resources:
                 notebook_path: ../src/dev_olist_bundle/auto_loader_ingestion.ipynb
 
                 base_parameters:
+                  # Matlab job.parameters.catalog = job ka catalog parameter.
+                  catalog_name: "{{job.parameters.catalog}}"
                   source_name: "{{input.source_name}}"
                   file_format: "{{input.file_format}}"
 
