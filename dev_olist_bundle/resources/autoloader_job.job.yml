@@ -4,19 +4,13 @@ resources:
   jobs:
     sample_job:
       name: auto_loader_
-
-      trigger:
-        periodic:
-          interval: 1
-          unit: DAYS
-
       # email_notifications:
       #   on_failure:
       #     - your_email@example.com
 
       parameters:
         - name: catalog
-          default: ${var.catalog}
+          default: ${var.catalog} #main catalog taken by dab based on the deployed target
         - name: schema
           default: ${var.schema}
 
